@@ -20,9 +20,19 @@ namespace Pasvaldibas.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                      "~/Scripts/angular.js",
+                      "~/Scripts/ngDialog.min.js",
+                      "~/Scripts/Chart.min.js",
+                      "~/Scripts/angular-chart.min.js",
+                      "~/Scripts/app.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/ngDialog-theme-default.min.css",
+                      "~/Content/ngDialog.min.css",
+                      "~/Content/app.css"));
         }
     }
 }

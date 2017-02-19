@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="dashboard-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-3 item-container">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <p class="text-center good">
+                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
+                                </p>
+                                <h4 class="text-center">Jānis Krūmiņš</h4>
+                                <h6 class="text-center">Latvijas Virpotāju partija</h6>
+                            </div>
+                            <div class="col-md-7">
+                                <canvas class="chart chart-pie chart-xs" chart-data="data"
+                                        chart-labels="labels" chart-options="options"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <canvas id="base" class="chart-bar"
+                            chart-data="data" chart-labels="labels" chart-colors="colors"></canvas> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

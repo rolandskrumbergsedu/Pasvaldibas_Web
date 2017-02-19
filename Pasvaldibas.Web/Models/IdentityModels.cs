@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Data.Entity;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -29,5 +30,11 @@ namespace Pasvaldibas.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Apmeklejums> Apmeklejumi { get; set; }
+
+        public DbSet<Deputats> Deputati { get; set; }
+
+        public DbSet<Pasvaldiba> Pasvaldibas { get; set; }
     }
 }

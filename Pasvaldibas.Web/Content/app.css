@@ -1,0 +1,82 @@
+﻿.dashboard-container {
+    margin-top: 30px;
+}
+
+.fa-6 {
+    font-size: 20em;
+}
+
+.fa-5 {
+    font-size: 12em;
+}
+
+.fa-4 {
+    font-size: 7em;
+}
+
+.fa-4 {
+    font-size: 4em;
+}
+
+.good {
+    color: green;
+}
+
+.average {
+    color: orange;
+}
+
+.bad {
+    color: red;
+}
+
+.item-container {
+    padding-top: 20px;
+}
+
+.municipality-body {
+    font-family: "Roboto",Arial,sans-serif
+}
+
+.gerbonis {
+    width: 30px;
+}
+
+.chart-legend {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.legend-span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+.legend-red {
+    background-color: #f7464a;
+    background-color: rgba(247, 70, 74, 1);
+}
+
+.legend-blue {
+    background-color: #97bbcd;
+    background-color: rgba(151, 187, 205, 1);
+}
+
+.legend-grey {
+    background-color: #dcdcdc;
+    background-color: rgba(220, 220, 220, 1);
+}
+
+.legend{ text-align: center; }
+.legend ul { list-style: none; }
+.legend ul li { display: inline; }
+
+.deputy-link {
+    color: black;
+}
+
+.deputy-link:hover {
+    color: black;
+}
