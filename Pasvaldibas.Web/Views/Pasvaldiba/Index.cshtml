@@ -4,123 +4,52 @@
 }
 
 
-<div class="dashboard-container" ng-controller="PieCtrl">
-    <div class="container">
+<div class="dashboard-container" ng-controller="PasvaldibaCtrl">
+
+    <div class="container" ng-if="loadingData">
+        <div class="row">
+            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;"/>
+        </div>
+    </div>
+
+    <div class="container" ng-if="!loadingData">
+
         <div class="row">
             <div>
                 <img class="gerbonis img-responsive" style="margin: 0 auto;" src="~/Content/images/dobele_gerb_1[1].jpg">
-                <h2 class="text-center">Dobeles novada pašvaldība</h2>
+                <h2 class="text-center">{{municipalityName}}</h2>
             </div>
             <div class="legend">
                 <ul class="chart-legend">
-                    <li>
-                        <span class="legend-red legend-span"> </span>
-                        <span>Atvaļinājums</span>
-                    </li>
-                    <li>
-                        <span class="legend-blue legend-span"> </span>
-                        <span>Attaisnots</span>
-                    </li>
-                    <li>
-                        <span class="legend-grey legend-span"> </span>
-                        <span>Neattaisnots</span>
+                    <li ng-repeat="reason in reasonsToColor track by $index">
+                        <span class="legend-span" ng-style="getColor($index)"> </span>
+                        <span>{{reason}}</span>
                     </li>
                 </ul>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-3 item-container">
+                    <div class="col-md-4 item-container" ng-repeat="deputy in deputies">
                         <div class="row">
                             <div class="col-md-5">
                                 <a class="deputy-link" ng-click="openModal()">
-                                    <p class="text-center good">
+                                    <p class="text-center" ng-style="getGoodness(deputy)">
                                         <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
                                     </p>
-                                    <h4 class="text-center">Jānis Krūmiņš</h4>
-                                    <h6 class="text-center">Latvijas Virpotāju partija</h6>
+                                    <h4 class="text-center">{{deputy.Name}}</h4>
+                                    <h6 class="text-center">Apmeklētas sēdes:</h6>
+                                    <h6 class="text-center">{{deputy.AttendedCount}} no {{deputy.AllCount}}</h6>
                                 </a>
                             </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 item-container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="text-center average">
-                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                </p>
-                                <h4 class="text-center">Apelsīns</h4>
-                                <h6 class="text-center">Banānu apvienība</h6>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 item-container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="text-center bad">
-                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                </p>
-                                <h4 class="text-center">Hagrids</h4>
-                                <h6 class="text-center">Harija Potera fanu klubs</h6>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 item-container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="text-center good">
-                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                </p>
-                                <h4 class="text-center">Jana Kalniņa</h4>
-                                <h6 class="text-center">Blondīnes un brunetes</h6>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 item-container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="text-center bad">
-                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                </p>
-                                <h4 class="text-center">Jānis Kurinātājs</h4>
-                                <h6 class="text-center">Gaišu Latviju!</h6>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 item-container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="text-center good">
-                                    <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                </p>
-                                <h4 class="text-center">Badam tss..</h4>
-                                <h6 class="text-center">Dažādi radījumi</h6>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas class="chart chart-pie chart-xs" chart-data="data"
-                                        chart-labels="labels" chart-options="options"></canvas>
+                            <div class="col-md-6">
+                                <canvas class="chart chart-pie chart-xs" chart-data="getData(deputy)"
+                                        chart-labels="getLabels(deputy)"
+                                        chart-options="options"
+                                        chart-colors="getChartColors(deputy)"
+                                        ng-if="deputy.AttendedCount != deputy.AllCount"></canvas>
+                                <p class="text-center" ng-if="deputy.AttendedCount == deputy.AllCount">Nav neapmeklēto sēžu</p>
                             </div>
                         </div>
                     </div>

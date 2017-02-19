@@ -11,5 +11,6 @@ namespace Pasvaldibas.Web.Controllers.api
         public int NotAttendedCount { get; set; }
 
         public Dictionary<string, int> NotAttendedCountReasons { get; set; }
+        public int AllCount { get; set; }
     }
 }

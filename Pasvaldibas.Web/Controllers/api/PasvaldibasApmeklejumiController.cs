@@ -57,6 +57,8 @@ namespace Pasvaldibas.Web.Controllers.api
                         }
                     }
 
+                    deputyModel.AllCount = deputyModel.AttendedCount + deputyModel.NotAttendedCount;
+
                     result.Deputies.Add(deputyModel);
                 }
 
