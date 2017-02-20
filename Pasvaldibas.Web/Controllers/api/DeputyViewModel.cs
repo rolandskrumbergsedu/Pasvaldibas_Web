@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Pasvaldibas.Web.Controllers.api
 {
     public class DeputyViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
         public int AttendedCount { get; set; }

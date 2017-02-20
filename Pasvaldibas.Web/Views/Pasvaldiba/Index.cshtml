@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pašvaldība";
 }
 
 <div class="dashboard-container" ng-controller="PasvaldibaCtrl">
@@ -15,7 +15,10 @@
 
         <div class="row">
             <div>
-                <img class="gerbonis img-responsive" style="margin: 0 auto;" src="~/Content/gerboni/{{municipalityCode}}.jpg">
+                <img ng-if="municipalityCode"
+                     class="gerbonis img-responsive"
+                     style="margin: 0 auto;" 
+                     src="~/Content/gerboni/{{municipalityCode}}.jpg">
                 <h2 class="text-center">{{municipalityName}}</h2>
             </div>
             <div class="legend">
@@ -30,10 +33,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-4 item-container" ng-repeat="deputy in deputies">
+                    <div class="col-md-4 item-container" ng-repeat="deputy in deputies track by $index">
                         <div class="row">
                             <div class="col-md-5">
-                                <a class="deputy-link" ng-click="openModal()">
+                                <a class="deputy-link" ng-click="openDeputy(deputy.Id)">
                                     <p class="text-center" ng-style="getGoodness(deputy)">
                                         <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
                                     </p>
@@ -43,10 +46,10 @@
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <canvas class="chart chart-pie chart-xs" chart-data="getData(deputy)"
-                                        chart-labels="getLabels(deputy)"
+                                <canvas class="chart chart-pie chart-xs" chart-data="getData($index)"
+                                        chart-labels="getLabels($index)"
                                         chart-options="options"
-                                        chart-colors="getChartColors(deputy)"
+                                        chart-colors="getChartColors($index)"
                                         ng-if="deputy.AttendedCount != deputy.AllCount"></canvas>
                                 <p class="text-center" ng-if="deputy.AttendedCount == deputy.AllCount">Nav neapmeklēto sēžu</p>
                             </div>

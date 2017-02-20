@@ -2,7 +2,7 @@
 
 var myApp = angular.module('app', ['chart.js', 'ngDialog']);
 
-myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($scope, ngDialog, $http) {
+myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', '$controller', function ($scope, ngDialog, $http, $controller) {
 
     $scope.loadingData = true;
     $scope.isError = false;
@@ -13,6 +13,10 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
 
     $scope.reasonsToColor = [];
     $scope.colorsForReasons = [];
+
+    $scope.deputyLabels = [];
+    $scope.deputyData = [];
+    $scope.deputyChartColors = [];
 
     function inArray(needle, haystack) {
         var count = haystack.length;
@@ -57,6 +61,31 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
                     }
                 });
             }
+
+            // get labels
+            $scope.deputyLabels.push({
+                labels: reasons.sort()
+            });
+
+            // get data
+            var data = [];
+            reasons.sort().forEach(function (val) {
+                data.push(deputy.NotAttendedCountReasons[val]);
+            });
+            $scope.deputyData.push({
+                data: data
+            });
+
+            // get chart colors
+            var colors = [];
+            reasons.sort().forEach(function (reason) {
+                var index = $scope.reasonsToColor.indexOf(reason);
+
+                colors.push($scope.colorsForReasons[index]);
+            });
+            $scope.deputyChartColors.push({
+                colors: colors
+            });
         });
 
         $scope.loadingData = false;
@@ -70,49 +99,33 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
         legend: { display: false }
     };
 
-    $scope.openModal = function () {
+    $scope.openDeputy = function (dptyId) {
+        
+        var data = {
+            deputyId: dptyId
+        }
+
         ngDialog.open({
             template: '../Templates/deputyView.html',
-            controller: 'DeputyCtrl'
+            controller: 'DeputyCtrl',
+            data: data
         });
     }
 
     $scope.getLabels = function (deputy) {
 
-        var reasons = Object.getOwnPropertyNames(deputy.NotAttendedCountReasons).sort();
-
-        return reasons;
+        return $scope.deputyLabels[deputy].labels;
 
     }
 
     $scope.getData = function (deputy) {
 
-        var data = [];
-        var labels = Object.getOwnPropertyNames(deputy.NotAttendedCountReasons).sort();
-        labels.forEach(function (val) {
-            data.push(deputy.NotAttendedCountReasons[val]);
-        });
-
-        return data;
-
+        return $scope.deputyData[deputy].data;
     }
 
     $scope.getChartColors = function (deputy) {
 
-        if (deputy) {
-            var reasons = Object.getOwnPropertyNames(deputy.NotAttendedCountReasons).sort();
-            var colors = [];
-
-            reasons.forEach(function (reason) {
-                var index = $scope.reasonsToColor.indexOf(reason);
-
-                colors.push($scope.colorsForReasons[index]);
-            });
-
-            return colors;
-        }
-
-        return null;
+        return $scope.deputyChartColors[deputy].colors;
     }
 
     $scope.getColor = function (index) {
@@ -145,12 +158,76 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
 
 }]);
 
-myApp.controller('DeputyCtrl', ['$scope', function ($scope) {
-    $scope.labels = ['11.11.2016', '11.10.2016', '11.09.2016', '11.08.2016', '11.07.2016', '11.06.2016', '11.05.2016'];
-    $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72', '#45b7cd', '#ff6384', '#ff8e72', '#ff8e72'];
-    $scope.data = [
-      [1, 1, 1, 1, 1, 1, 1]
-    ];
+myApp.controller('DeputyCtrl', ['$scope','$http', function ($scope, $http) {
+
+    $scope.deputyName = "";
+    $scope.deputyMunicipality = "";
+
+    $scope.data2013labels = [];
+    $scope.data2014labels = [];
+    $scope.data2015labels = [];
+    $scope.data2016labels = [];
+
+    $scope.data2013data = [];
+    $scope.data2014data = [];
+    $scope.data2015data = [];
+    $scope.data2016data = [];
+
+    $scope.options = {
+        scales: {
+            yAxes: [{
+                display: false,
+                barPercentage: 1,
+                ticks: {
+                    min: 0,
+                    max: 1.2,
+                    stepSize: 0.2
+                }
+            }]
+        }
+    }
+
+    $scope.dataset2013Override = [{}];
+
+    $scope.dataset2014Override = [{}];
+
+    $scope.dataset2015Override = [{}];
+
+    $scope.dataset2016Override = [{}];
+
+    var urlToCall = '/api/Deputati/' + $scope.ngDialogData.deputyId;
+
+    function populate(apmeklejumi, labels, data, override) {
+        var d = [];
+        var c = [];
+        apmeklejumi.forEach(function (val) {
+            labels.push(val.Date);
+
+            if (val.Attended === "1") {
+                c.push("#458B00");
+            } else {
+                c.push("#FF0000");
+            }
+            d.push(1);
+        });
+        data.push(d);
+        override[0].backgroundColor = c;
+    }
+
+    $http({
+        method: 'GET',
+        url: urlToCall
+    })
+        .then(function (response) {
+            $scope.deputyName = response.data.Name;
+            $scope.deputyMunicipality = response.data.Municipality;
+
+            populate(response.data.Apmeklejumi2013, $scope.data2013labels, $scope.data2013data, $scope.dataset2013Override);
+            populate(response.data.Apmeklejumi2014, $scope.data2014labels, $scope.data2014data, $scope.dataset2014Override);
+            populate(response.data.Apmeklejumi2015, $scope.data2015labels, $scope.data2015data, $scope.dataset2015Override);
+            populate(response.data.Apmeklejumi2016, $scope.data2016labels, $scope.data2016data, $scope.dataset2016Override);
+        });
+
 }]);
 
 myApp.controller('OverviewCtrl', ['$scope', '$http', function ($scope, $http) {

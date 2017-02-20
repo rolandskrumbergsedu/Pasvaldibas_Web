@@ -206,6 +206,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\api\ApmeklejumsViewModel.cs" />
+    <Compile Include="Controllers\api\DeputatiController.cs" />
     <Compile Include="Controllers\api\DeputyViewModel.cs" />
     <Compile Include="Controllers\api\MunicipalityItem.cs" />
     <Compile Include="Controllers\api\PasvaldibaController.cs" />

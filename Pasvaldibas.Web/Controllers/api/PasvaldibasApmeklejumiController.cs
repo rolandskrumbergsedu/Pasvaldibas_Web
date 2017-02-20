@@ -29,6 +29,7 @@ namespace Pasvaldibas.Web.Controllers.api
                 {
                     var deputyModel = new DeputyViewModel
                     {
+                        Id = deputats.DeputatsId,
                         Name = deputats.Name,
                         AttendedCount = 0,
                         NotAttendedCount = 0,
