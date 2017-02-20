@@ -6,6 +6,8 @@ namespace Pasvaldibas.Web.Controllers.api
     {
         public string PasvaldibaName { get; set; }
 
+        public string PasvaldibaCode { get; set; }
+
         public List<DeputyViewModel> Deputies { get; set; }
     }
 }

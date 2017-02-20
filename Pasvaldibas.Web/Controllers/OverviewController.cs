@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace Pasvaldibas.Web.Controllers
 {
-    public class PasvaldibaController : Controller
+    public class OverviewController : Controller
     {
-        // GET: Pasvaldiba
-        public ActionResult Index(string id)
+        // GET: Overview
+        public ActionResult Index()
         {
             return View();
         }

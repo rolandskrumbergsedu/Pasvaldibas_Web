@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
 <div class="dashboard-container" ng-controller="PasvaldibaCtrl">
 
     <div class="container" ng-if="loadingData">
@@ -16,7 +15,7 @@
 
         <div class="row">
             <div>
-                <img class="gerbonis img-responsive" style="margin: 0 auto;" src="~/Content/images/dobele_gerb_1[1].jpg">
+                <img class="gerbonis img-responsive" style="margin: 0 auto;" src="~/Content/gerboni/{{municipalityCode}}.jpg">
                 <h2 class="text-center">{{municipalityName}}</h2>
             </div>
             <div class="legend">

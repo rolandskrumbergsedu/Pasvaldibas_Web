@@ -22,14 +22,19 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
         return false;
     }
 
+    var currentUrlSplitted = window.location.href.split("/");
+
+    var currentMunicipality = currentUrlSplitted[currentUrlSplitted.length - 1];
+    var urlToCall = '/api/PasvaldibasApmeklejumi/' + currentMunicipality;
+    
     $http({
         method: 'GET',
-        url: '/api/PasvaldibasApmeklejumi/ALSUNGA' //TO DO: change as parameter
+        url: urlToCall
     }).then(function (response) {
 
         $scope.municipalityName = response.data.PasvaldibaName;
+        $scope.municipalityCode = response.data.PasvaldibaCode;
         $scope.deputies = response.data.Deputies;
-        $scope.loadingData = false;
 
         // go through all deputies
         $scope.deputies.forEach(function (deputy) {
@@ -53,6 +58,8 @@ myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', function ($sc
                 });
             }
         });
+
+        $scope.loadingData = false;
 
     }, function () {
         $scope.isError = true;
@@ -144,4 +151,23 @@ myApp.controller('DeputyCtrl', ['$scope', function ($scope) {
     $scope.data = [
       [1, 1, 1, 1, 1, 1, 1]
     ];
+}]);
+
+myApp.controller('OverviewCtrl', ['$scope', '$http', function ($scope, $http) {
+    
+    $scope.loadingData = true;
+
+    $scope.municipalities = null;
+
+    $http({
+            method: 'GET',
+            url: '/api/Pasvaldiba'
+        })
+        .then(function(response) {
+
+            $scope.municipalities = response.data;
+
+            $scope.loadingData = false;
+        });
+
 }]);

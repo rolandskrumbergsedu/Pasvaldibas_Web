@@ -12,9 +12,13 @@ namespace Pasvaldibas.Web.Controllers.api
         private ApplicationDbContext _db = new ApplicationDbContext();
 
         [HttpGet]
-        public IQueryable<string> GetAll()
+        public IQueryable<MunicipalityItem> GetAll()
         {
-            return _db.Pasvaldibas.Select(x => x.Code);
+            return _db.Pasvaldibas.Select(x => new MunicipalityItem
+            {
+                Name = x.Name,
+                Code = x.Code
+            });
         }
     }
 }

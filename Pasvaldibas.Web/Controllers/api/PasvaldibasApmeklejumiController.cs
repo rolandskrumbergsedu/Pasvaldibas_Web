@@ -21,6 +21,7 @@ namespace Pasvaldibas.Web.Controllers.api
                 var result = new PasvaldibaViewModel
                 {
                     PasvaldibaName = municipality.Name,
+                    PasvaldibaCode = municipality.Code,
                     Deputies = new List<DeputyViewModel>()
                 };
 
