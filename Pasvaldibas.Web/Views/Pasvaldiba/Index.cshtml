@@ -1,62 +1,24 @@
 ﻿
 @{
-    ViewBag.Title = "Pašvaldība";
+    ViewBag.Title = "Pašvaldības";
 }
 
-<div class="dashboard-container" ng-controller="PasvaldibaCtrl">
+<div class="dashboard-container" ng-controller="OverviewCtrl">
 
     <div class="container" ng-if="loadingData">
         <div class="row">
-            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;"/>
+            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;" />
         </div>
     </div>
 
     <div class="container" ng-if="!loadingData">
 
         <div class="row">
-            <div>
-                <img ng-if="municipalityCode"
-                     class="gerbonis img-responsive"
-                     style="margin: 0 auto;" 
-                     src="~/Content/gerboni/{{municipalityCode}}.jpg">
-                <h2 class="text-center">{{municipalityName}}</h2>
+
+            <div class="col-md-2" ng-repeat="municipality in municipalities">
+                <a href="/Overview/Index/{{municipality.Code}}">{{municipality.Name}}</a>
             </div>
-            <div class="legend">
-                <ul class="chart-legend">
-                    <li ng-repeat="reason in reasonsToColor track by $index">
-                        <span class="legend-span" ng-style="getColor($index)"> </span>
-                        <span>{{reason}}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4 item-container" ng-repeat="deputy in deputies track by $index">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a class="deputy-link" ng-click="openDeputy(deputy.Id)">
-                                    <p class="text-center" ng-style="getGoodness(deputy)">
-                                        <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
-                                    </p>
-                                    <h4 class="text-center">{{deputy.Name}}</h4>
-                                    <h6 class="text-center">Apmeklētas sēdes:</h6>
-                                    <h6 class="text-center">{{deputy.AttendedCount}} no {{deputy.AllCount}}</h6>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas class="chart chart-pie chart-xs" chart-data="getData($index)"
-                                        chart-labels="getLabels($index)"
-                                        chart-options="options"
-                                        chart-colors="getChartColors($index)"
-                                        ng-if="deputy.AttendedCount != deputy.AllCount"></canvas>
-                                <p class="text-center" ng-if="deputy.AttendedCount == deputy.AllCount">Nav neapmeklēto sēžu</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
