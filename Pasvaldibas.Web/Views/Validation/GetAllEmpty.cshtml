@@ -1,0 +1,17 @@
+﻿@model Dictionary<string, List<string>>
+@{
+    ViewBag.Title = "Visu pašvaldību tukšie datumi";
+}
+
+@foreach (var item in Model)
+{
+    <h3>@item.Key</h3>
+    <table>
+        @foreach (var datums in item.Value)
+        {
+            <tr>
+                <td>@datums</td>
+            </tr>
+        }
+    </table>
+}

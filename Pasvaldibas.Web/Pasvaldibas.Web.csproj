@@ -213,11 +213,13 @@
     <Compile Include="Controllers\api\PasvaldibaController.cs" />
     <Compile Include="Controllers\api\PasvaldibasApmeklejumiController.cs" />
     <Compile Include="Controllers\api\PasvaldibaViewModel.cs" />
+    <Compile Include="Controllers\api\ValidationController.cs" />
     <Compile Include="Controllers\CilveksController.cs" />
     <Compile Include="Controllers\DeputatsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OverviewController.cs" />
     <Compile Include="Controllers\PasvaldibaController.cs" />
+    <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -324,6 +326,10 @@
     <Content Include="Views\Pasvaldiba\Index.cshtml" />
     <Content Include="Views\Cilveks\Index.cshtml" />
     <Content Include="Views\Overview\Index.cshtml" />
+    <Content Include="Views\Validation\GetEmptyMonthYearByMunicipality.cshtml" />
+    <Content Include="Views\Validation\GetAllEmpty.cshtml" />
+    <Content Include="Views\Validation\GetDatesWhereNotModa.cshtml" />
+    <Content Include="Views\Validation\GetAllDatesWhereNotModa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

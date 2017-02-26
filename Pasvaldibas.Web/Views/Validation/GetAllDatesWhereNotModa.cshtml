@@ -1,0 +1,18 @@
+﻿@model Dictionary<string, List<Pasvaldibas.Web.Controllers.api.OccuranceItem>>
+@{
+    ViewBag.Title = "Datumi ar neatbilstošu skaitu";
+}
+
+@foreach (var item in Model)
+{
+    <h3>@item.Key</h3>
+    <table>
+        @foreach (var apmeklejums in item.Value)
+        {
+            <tr>
+                <td>@apmeklejums.Date</td>
+                <td>@apmeklejums.Value</td>
+            </tr>
+        }
+    </table>
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Pasvaldibas.Web.Models;
 
@@ -7,22 +8,43 @@ namespace Pasvaldibas.Converter
 {
     class Program
     {
-        private const string MuniName = "Alsunga";
-        private const string MuniCode = "16";
-
         private const int ApmeklejumaNrColNr = 1;
-        private const int DeputaVardaColNr = 3;
-        private const int DateColNr = 4;
-        private const int ApmeklejumaColNr = 5;
-        private const int NeapmeklesanasIemeslaColNr = 6;
+        private const int DeputaVardaColNr = 2;
+        private const int DateColNr = 3;
+        private const int ApmeklejumaColNr = 4;
+        private const int NeapmeklesanasIemeslaColNr = 5;
 
         static readonly ApplicationDbContext db = new ApplicationDbContext();
 
 
         static void Main(string[] args)
         {
-            var resultFile = $"C:\\Work_misc\\Protokoli\\Rezultati\\{MuniName}.xlsx";
+            var files = Directory.GetFiles($"C:\\Work_misc\\Protokoli\\Gatavie");
 
+            foreach (var file in files)
+            {
+                var split = file.Split('\\');
+                var fileName = split[split.Length - 1].Replace(".xlsx",string.Empty).Replace(".xls", string.Empty);
+
+                var muniName = fileName;
+                var muniCode = NameToCode(fileName);
+
+                try
+                {
+                    HandleMunicipality(file, muniName, muniCode);
+                }
+                catch (Exception ex)
+                {
+                    File.AppendAllText("C:\\Work_misc\\Protokoli\\ErrorLogs.txt", $"Exception occured. {muniName} {muniCode} - {ex.Message}");
+                }
+            }
+
+            Console.WriteLine("DONE");
+            Console.ReadKey();
+        }
+
+        private static void HandleMunicipality(string resultFile, string name, string code)
+        {
             var xlApp = new Microsoft.Office.Interop.Excel.Application();
             var xlWorkbook = xlApp.Workbooks.Open(resultFile);
             var xlWorksheet = xlWorkbook.Sheets[1];
@@ -31,7 +53,7 @@ namespace Pasvaldibas.Converter
             var rowCount = xlRange.Rows.Count;
 
             // TO DO: Izveido jaunu pasvaldibu un iegūst atsauci uz to
-            CreateMunicipality(MuniName, MuniCode);
+            CreateMunicipality(name, code);
 
             var tmp = new List<Apmeklejums>();
 
@@ -39,6 +61,7 @@ namespace Pasvaldibas.Converter
             //excel is not zero based!!
             for (var i = 2; i <= rowCount; i++)
             {
+
                 var apmeklejums = new Apmeklejums();
                 Deputats deputats = null;
                 var date = DateTime.MinValue;
@@ -49,7 +72,7 @@ namespace Pasvaldibas.Converter
                 if (xlRange.Cells[i, DeputaVardaColNr] != null && xlRange.Cells[i, DeputaVardaColNr].Value2 != null)
                 {
                     var deputatsName = xlRange.Cells[i, DeputaVardaColNr].Value2.ToString();
-                    deputats = CreateDeputy(deputatsName, MuniName);
+                    deputats = CreateDeputy(deputatsName, name);
                 }
                 else
                 {
@@ -64,8 +87,25 @@ namespace Pasvaldibas.Converter
 
                 if (xlRange.Cells[i, DateColNr] != null && xlRange.Cells[i, DateColNr].Value2 != null)
                 {
-                    double d = double.Parse(xlRange.Cells[i, DateColNr].Value2.ToString());
-                    date = DateTime.FromOADate(d);
+                    try
+                    {
+                        double d = double.Parse(xlRange.Cells[i, DateColNr].Value2.ToString());
+                        date = DateTime.FromOADate(d);
+                    }
+                    catch (Exception) // Not a date format,check if string
+                    {
+                        var posibleDate = (string)xlRange.Cells[i, DateColNr].Value2.ToString();
+                        var split = posibleDate.Split('.');
+                        if (split.Length == 3)
+                        {
+                            date = new DateTime(int.Parse(split[2]), int.Parse(split[1]), int.Parse(split[0]));
+                        }
+                        else
+                        {
+                            throw;
+                        }
+
+                    }
                 }
 
                 if (xlRange.Cells[i, ApmeklejumaColNr] != null && xlRange.Cells[i, ApmeklejumaColNr].Value2 != null)
@@ -95,12 +135,12 @@ namespace Pasvaldibas.Converter
 
                 tmp.Add(apmeklejums);
 
-                if (i%30 == 0)
+                if (i % 30 == 0)
                 {
                     SaveAttendance(tmp);
                     tmp = new List<Apmeklejums>();
                 }
-                
+
             }
 
             SaveAttendance(tmp);
@@ -114,9 +154,6 @@ namespace Pasvaldibas.Converter
 
             //quit and release
             xlApp.Quit();
-
-            Console.WriteLine("DONE");
-            Console.ReadKey();
         }
 
         private static void CreateMunicipality(string municipality, string municipalityCode)
@@ -134,7 +171,7 @@ namespace Pasvaldibas.Converter
             db.Pasvaldibas.Add(pasvaldiba);
             db.SaveChanges();
             Console.WriteLine($"Municipality added {pasvaldiba.CodeNr} {pasvaldiba.Code} {pasvaldiba.Name}");
-            //return db.Pasvaldibas.FirstOrDefault(x => x.Code == municipality.ToUpper());
+            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Municipality added {pasvaldiba.CodeNr} {pasvaldiba.Code} {pasvaldiba.Name}");
         }
 
         private static Deputats CreateDeputy(string name, string municipality)
@@ -157,6 +194,7 @@ namespace Pasvaldibas.Converter
             db.SaveChanges();
 
             Console.WriteLine($"Deputy added {deputats.Name}");
+            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Deputy added {deputats.Name}");
 
             return db.Deputati.FirstOrDefault(x => x.Name == name && x.Pasvaldiba.Code == municipality.ToUpper());
         }
@@ -168,8 +206,25 @@ namespace Pasvaldibas.Converter
 
             foreach (var apmeklejums in apmeklejumi)
             {
+                File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Added: {apmeklejums.Datums} {apmeklejums.Deputats.Name} {apmeklejums.Apmekleja} {apmeklejums.NeapmeklesanasIemesls}");
                 Console.WriteLine($"Added: {apmeklejums.Datums} {apmeklejums.Deputats.Name} {apmeklejums.Apmekleja} {apmeklejums.NeapmeklesanasIemesls}");
             }
+        }
+
+        private static string NameToCode(string name)
+        {
+            return name.ToUpper()
+                .Replace('Ē', 'E')
+                .Replace('Ū', 'U')
+                .Replace('Ī', 'I')
+                .Replace('Ā', 'A')
+                .Replace('Š', 'S')
+                .Replace('Ķ', 'K')
+                .Replace('Ļ', 'L')
+                .Replace('Ž', 'Z')
+                .Replace('Č', 'C')
+                .Replace('Ņ', 'N')
+                .Replace(' ', '_');
         }
     }
 }
