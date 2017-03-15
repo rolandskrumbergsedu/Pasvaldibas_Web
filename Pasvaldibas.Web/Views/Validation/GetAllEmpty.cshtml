@@ -5,7 +5,8 @@
 
 @foreach (var item in Model)
 {
-    <h3>@item.Key</h3>
+    <h2>@item.Key</h2>
+    <h6>@ViewData[item.Key]</h6>
     <table>
         @foreach (var datums in item.Value)
         {

@@ -3,6 +3,10 @@
     ViewBag.Title = "Datumi ar neatbilstošu skaitu";
 }
 
+<h4>Pašvaldības un to protokoli, kas ir datubāzē</h4>
+<h2>Var gadīties, ka kādā datumā ir divas reizes vairāk deputātu, kā vajadzētu. Tas nozīmē, ka šajā datumā ir divas sēdes bijušas.</h2>
+<br/>
+
 @foreach (var item in Model)
 {
     <h2>@item.Key</h2>

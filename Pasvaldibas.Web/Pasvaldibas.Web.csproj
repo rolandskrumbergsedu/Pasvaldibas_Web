@@ -232,6 +232,18 @@
     <Compile Include="Migrations\201702191200392_Neapmeklejumi.Designer.cs">
       <DependentUpon>201702191200392_Neapmeklejumi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702281922360_DeputatuSkaits.cs" />
+    <Compile Include="Migrations\201702281922360_DeputatuSkaits.Designer.cs">
+      <DependentUpon>201702281922360_DeputatuSkaits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703041620088_ProtokoluSkaits.cs" />
+    <Compile Include="Migrations\201703041620088_ProtokoluSkaits.Designer.cs">
+      <DependentUpon>201703041620088_ProtokoluSkaits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703072358556_Status.cs" />
+    <Compile Include="Migrations\201703072358556_Status.Designer.cs">
+      <DependentUpon>201703072358556_Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -326,10 +338,12 @@
     <Content Include="Views\Pasvaldiba\Index.cshtml" />
     <Content Include="Views\Cilveks\Index.cshtml" />
     <Content Include="Views\Overview\Index.cshtml" />
-    <Content Include="Views\Validation\GetEmptyMonthYearByMunicipality.cshtml" />
     <Content Include="Views\Validation\GetAllEmpty.cshtml" />
-    <Content Include="Views\Validation\GetDatesWhereNotModa.cshtml" />
     <Content Include="Views\Validation\GetAllDatesWhereNotModa.cshtml" />
+    <Content Include="Views\Validation\GetAllDatesWhereNotCorrectCount.cshtml" />
+    <Content Include="Views\Validation\GetAllDatesWhereDoubleDeputies.cshtml" />
+    <Content Include="Views\Validation\GetAllDatesWhereNotCorrectOverallCount.cshtml" />
+    <Content Include="Views\Validation\GetAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -348,6 +362,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702191200392_Neapmeklejumi.resx">
       <DependentUpon>201702191200392_Neapmeklejumi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702281922360_DeputatuSkaits.resx">
+      <DependentUpon>201702281922360_DeputatuSkaits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703041620088_ProtokoluSkaits.resx">
+      <DependentUpon>201703041620088_ProtokoluSkaits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703072358556_Status.resx">
+      <DependentUpon>201703072358556_Status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

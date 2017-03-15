@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Pasvaldibas.Web.Controllers.OccuranceItemViewModel>
+@{
+    ViewBag.Title = "Datumi ar neatbilstošu skaitu";
+}
+
+@foreach (var item in Model)
+{
+    <h2>@item.Name - @item.Count</h2>
+    <h6>@item.Status</h6>
+    <table>
+        @foreach (var apmeklejums in item.Occurances)
+        {
+            <tr>
+                <td>@apmeklejums.Date</td>
+                <td> - @apmeklejums.Value</td>
+            </tr>
+        }
+    </table>
+}

@@ -1,6 +1,6 @@
-﻿@model Dictionary<string, List<Pasvaldibas.Web.Controllers.api.OccuranceItem>>
+﻿@model Dictionary<string, List<Pasvaldibas.Web.Controllers.DuplicateItem>>
 @{
-    ViewBag.Title = "Datumi ar neatbilstošu skaitu";
+    ViewBag.Title = "Datumi ar dubultu skaitu";
 }
 
 @foreach (var item in Model)
@@ -12,7 +12,7 @@
         {
             <tr>
                 <td>@apmeklejums.Date</td>
-                <td>@apmeklejums.Value</td>
+                <td>@apmeklejums.Deputy</td>
             </tr>
         }
     </table>

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "GetAllDatesWhereNotCorrectOverallCount";
+}
+
+<h2>Pašvaldību sēžu skaits pret protokolu skaitu</h2>
+
+@foreach (var item in Model)
+{
+    <p>@item</p>
+}

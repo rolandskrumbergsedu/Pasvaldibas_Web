@@ -35,7 +35,7 @@ namespace Pasvaldibas.Converter
                 }
                 catch (Exception ex)
                 {
-                    File.AppendAllText("C:\\Work_misc\\Protokoli\\ErrorLogs.txt", $"Exception occured. {muniName} {muniCode} - {ex.Message}");
+                    File.AppendAllText("C:\\Work_misc\\Protokoli\\ErrorLogs.txt", $"Exception occured. {muniName} {muniCode} - {ex.Message}" + Environment.NewLine);
                 }
             }
 
@@ -45,6 +45,7 @@ namespace Pasvaldibas.Converter
 
         private static void HandleMunicipality(string resultFile, string name, string code)
         {
+
             var xlApp = new Microsoft.Office.Interop.Excel.Application();
             var xlWorkbook = xlApp.Workbooks.Open(resultFile);
             var xlWorksheet = xlWorkbook.Sheets[1];
@@ -61,6 +62,7 @@ namespace Pasvaldibas.Converter
             //excel is not zero based!!
             for (var i = 2; i <= rowCount; i++)
             {
+
 
                 var apmeklejums = new Apmeklejums();
                 Deputats deputats = null;
@@ -145,6 +147,7 @@ namespace Pasvaldibas.Converter
 
             SaveAttendance(tmp);
 
+
             //cleanup
             GC.Collect();
             GC.WaitForPendingFinalizers();
@@ -171,7 +174,7 @@ namespace Pasvaldibas.Converter
             db.Pasvaldibas.Add(pasvaldiba);
             db.SaveChanges();
             Console.WriteLine($"Municipality added {pasvaldiba.CodeNr} {pasvaldiba.Code} {pasvaldiba.Name}");
-            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Municipality added {pasvaldiba.CodeNr} {pasvaldiba.Code} {pasvaldiba.Name}");
+            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Municipality added {pasvaldiba.CodeNr} {pasvaldiba.Code} {pasvaldiba.Name}" + Environment.NewLine);
         }
 
         private static Deputats CreateDeputy(string name, string municipality)
@@ -194,7 +197,7 @@ namespace Pasvaldibas.Converter
             db.SaveChanges();
 
             Console.WriteLine($"Deputy added {deputats.Name}");
-            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Deputy added {deputats.Name}");
+            File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Deputy added {deputats.Name}" + Environment.NewLine);
 
             return db.Deputati.FirstOrDefault(x => x.Name == name && x.Pasvaldiba.Code == municipality.ToUpper());
         }
@@ -206,7 +209,7 @@ namespace Pasvaldibas.Converter
 
             foreach (var apmeklejums in apmeklejumi)
             {
-                File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Added: {apmeklejums.Datums} {apmeklejums.Deputats.Name} {apmeklejums.Apmekleja} {apmeklejums.NeapmeklesanasIemesls}");
+                File.AppendAllText("C:\\Work_misc\\Protokoli\\Logs.txt", $"Added: {apmeklejums.Datums} {apmeklejums.Deputats.Name} {apmeklejums.Apmekleja} {apmeklejums.NeapmeklesanasIemesls}" + Environment.NewLine);
                 Console.WriteLine($"Added: {apmeklejums.Datums} {apmeklejums.Deputats.Name} {apmeklejums.Apmekleja} {apmeklejums.NeapmeklesanasIemesls}");
             }
         }
