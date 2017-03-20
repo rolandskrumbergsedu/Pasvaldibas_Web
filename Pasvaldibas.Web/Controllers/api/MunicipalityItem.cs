@@ -4,5 +4,7 @@
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longtitude { get; set; }
     }
 }

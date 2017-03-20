@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
 using Pasvaldibas.Web.Models;
 
 namespace Pasvaldibas.Web.Controllers.api
 {
-    public class PasvaldibasApmeklejumiController : ApiController
+    public class PasvaldibasApmeklejumiBasicController : ApiController
     {
         private ApplicationDbContext _db = new ApplicationDbContext();
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         [ResponseType(typeof(PasvaldibaViewModel))]
-        public IHttpActionResult GetPasvaldibasApmeklejumi(string id)
+        public IHttpActionResult GetPasvaldibasApmeklejumiBasic(string id)
         {
             var municipality = _db.Pasvaldibas.Include("Deputati").FirstOrDefault(x => x.Code == id);
 
@@ -32,8 +35,7 @@ namespace Pasvaldibas.Web.Controllers.api
                         Id = deputats.DeputatsId,
                         Name = deputats.Name,
                         AttendedCount = 0,
-                        NotAttendedCount = 0,
-                        NotAttendedCountReasons = new Dictionary<string, int>()
+                        NotAttendedCount = 0
                     };
 
                     _db.Entry(deputats).Collection(x => x.ApmekletasSedes).Load();
@@ -47,19 +49,6 @@ namespace Pasvaldibas.Web.Controllers.api
                         else
                         {
                             deputyModel.NotAttendedCount++;
-                            var iemesls = apmekletaSede.NeapmeklesanasIemesls.Length > 3
-                                ? apmekletaSede.NeapmeklesanasIemesls
-                                : "Nav zināms";
-
-                            if (deputyModel.NotAttendedCountReasons.ContainsKey(iemesls))
-                            {
-                                deputyModel.NotAttendedCountReasons[iemesls] =
-                                    deputyModel.NotAttendedCountReasons[iemesls] + 1;
-                            }
-                            else
-                            {
-                                deputyModel.NotAttendedCountReasons.Add(iemesls, 1);
-                            }
                         }
                     }
 

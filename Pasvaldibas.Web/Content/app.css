@@ -35,7 +35,7 @@
 }
 
 .municipality-body {
-    font-family: "Roboto",Arial,sans-serif
+    font-family: "Roboto",Arial,sans-serif;
 }
 
 .gerbonis {
@@ -69,14 +69,38 @@
     background-color: rgba(220, 220, 220, 1);
 }
 
-.legend{ text-align: center; }
-.legend ul { list-style: none; }
-.legend ul li { display: inline; }
+.legend {
+    text-align: center;
+}
+
+    .legend ul {
+        list-style: none;
+    }
+
+        .legend ul li {
+            display: inline;
+        }
 
 .deputy-link {
     color: black;
 }
 
-.deputy-link:hover {
-    color: black;
+    .deputy-link:hover {
+        color: black;
+    }
+
+#map {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.test {
+    color: #82a667;
+}
+
+.deputy-bar-2014 {
+    height: 250px;
 }

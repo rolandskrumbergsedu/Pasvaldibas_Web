@@ -210,6 +210,7 @@
     <Compile Include="Controllers\api\DeputatiController.cs" />
     <Compile Include="Controllers\api\DeputyViewModel.cs" />
     <Compile Include="Controllers\api\MunicipalityItem.cs" />
+    <Compile Include="Controllers\api\PasvaldibasApmeklejumiBasicController.cs" />
     <Compile Include="Controllers\api\PasvaldibaController.cs" />
     <Compile Include="Controllers\api\PasvaldibasApmeklejumiController.cs" />
     <Compile Include="Controllers\api\PasvaldibaViewModel.cs" />
@@ -243,6 +244,10 @@
     <Compile Include="Migrations\201703072358556_Status.cs" />
     <Compile Include="Migrations\201703072358556_Status.Designer.cs">
       <DependentUpon>201703072358556_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703191731164_GPS.cs" />
+    <Compile Include="Migrations\201703191731164_GPS.Designer.cs">
+      <DependentUpon>201703191731164_GPS.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -307,6 +312,7 @@
     <None Include="Properties\PublishProfiles\pasvaldibas - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\googleMapsLogic.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -330,7 +336,9 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -371,6 +379,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703072358556_Status.resx">
       <DependentUpon>201703072358556_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703191731164_GPS.resx">
+      <DependentUpon>201703191731164_GPS.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

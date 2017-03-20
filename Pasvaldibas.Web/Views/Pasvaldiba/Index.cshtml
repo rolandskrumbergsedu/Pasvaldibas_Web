@@ -3,23 +3,10 @@
     ViewBag.Title = "Pašvaldības";
 }
 
-<div class="dashboard-container" ng-controller="OverviewCtrl">
-
-    <div class="container" ng-if="loadingData">
-        <div class="row">
-            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;" />
-        </div>
-    </div>
-
-    <div class="container" ng-if="!loadingData">
-
-        <div class="row">
-
-            <div class="col-md-2" ng-repeat="municipality in municipalities">
-                <a href="/Overview/Index/{{municipality.Code}}">{{municipality.Name}}</a>
-            </div>
-
-        </div>
+<div id="map_loader" class="container">
+    <div class="row">
+        <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;" />
     </div>
 </div>
 
+<div id="map"></div>

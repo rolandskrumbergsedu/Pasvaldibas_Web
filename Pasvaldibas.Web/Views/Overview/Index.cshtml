@@ -2,16 +2,18 @@
     ViewBag.Title = "Pašvaldība";
 }
 
-<div class="dashboard-container" ng-controller="PasvaldibaCtrl">
+<div class="dashboard-container" ng-controller="PasvaldibaBasicCtrl" ng-cloak>
 
     <div class="container" ng-if="loadingData">
         <div class="row">
-            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;" />
+            <img src="~/Content/rolling.svg" class="img-responsive" style="margin: 0 auto;"/>
         </div>
     </div>
 
     <div class="container" ng-if="!loadingData">
-
+        <div class="row">
+            <a href="/Pasvaldiba">Atpakaļ uz karti</a>
+        </div>
         <div class="row">
             <div>
                 <img ng-if="municipalityCode"
@@ -22,9 +24,17 @@
             </div>
             <div class="legend">
                 <ul class="chart-legend">
-                    <li ng-repeat="reason in reasonsToColor track by $index">
-                        <span class="legend-span" ng-style="getColor($index)"> </span>
-                        <span>{{reason}}</span>
+                    <li>
+                        <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#ff0000"></i>
+                        <span>Apmeklēti mazāk kā 40% sēžu</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#ffcc00"></i>
+                        <span>Apmeklēti vairāk kā 40% sēžu un mazāk kā 80% sēžu</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#009900"></i>
+                        <span>Apmeklēti vairāk kā 80% sēžu</span>
                     </li>
                 </ul>
             </div>
@@ -37,7 +47,7 @@
                             <div class="col-md-5">
                                 <a class="deputy-link" ng-click="openDeputy(deputy.Id)">
                                     <p class="text-center" ng-style="getGoodness(deputy)">
-                                        <i class="fa fa-user-o fa-4 text-center" aria-hidden="true"></i>
+                                        <i class="fa fa-user-circle-o fa-4 text-center" aria-hidden="true"></i>
                                     </p>
                                     <h4 class="text-center">{{deputy.Name}}</h4>
                                     <h6 class="text-center">Apmeklētas sēdes:</h6>
@@ -46,11 +56,9 @@
                             </div>
                             <div class="col-md-6">
                                 <canvas class="chart chart-pie chart-xs" chart-data="getData($index)"
-                                        chart-labels="getLabels($index)"
+                                        chart-labels="labels"
                                         chart-options="options"
-                                        chart-colors="getChartColors($index)"
-                                        ng-if="deputy.AttendedCount != deputy.AllCount"></canvas>
-                                <p class="text-center" ng-if="deputy.AttendedCount == deputy.AllCount">Nav neapmeklēto sēžu</p>
+                                        chart-colors="colors"></canvas>
                             </div>
                         </div>
                     </div>

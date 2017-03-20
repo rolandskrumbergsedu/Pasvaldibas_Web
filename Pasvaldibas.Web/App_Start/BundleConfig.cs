@@ -27,6 +27,9 @@ namespace Pasvaldibas.Web
                       "~/Scripts/angular-chart.min.js",
                       "~/Scripts/app.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/googlemaps").Include(
+                      "~/Scripts/googleMapsLogic.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.min.css",

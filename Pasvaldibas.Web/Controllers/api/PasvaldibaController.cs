@@ -17,7 +17,9 @@ namespace Pasvaldibas.Web.Controllers.api
             return _db.Pasvaldibas.Select(x => new MunicipalityItem
             {
                 Name = x.Name,
-                Code = x.Code
+                Code = x.Code,
+                Latitude = x.Latitude,
+                Longtitude = x.Longtitude
             });
         }
     }

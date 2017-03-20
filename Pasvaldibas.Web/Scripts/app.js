@@ -2,166 +2,130 @@
 
 var myApp = angular.module('app', ['chart.js', 'ngDialog']);
 
-myApp.controller('PasvaldibaCtrl', ['$scope', 'ngDialog', '$http', '$controller', function ($scope, ngDialog, $http, $controller) {
+myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
+    function ($scope, ngDialog, $http) {
+        $scope.loadingData = true;
+        $scope.isError = false;
 
-    $scope.loadingData = true;
-    $scope.isError = false;
+        $scope.reasonsToColor = ['Ieradās', 'Neieradās'];
+        $scope.colorsForReasons = ['#82a667', '#db322e'];
 
-    $scope.allColors = ['#09f935', '#cb511b', '#dfd701', '#93d3d3',
-        '#451722', '#564f3b', '#efd489',
-        '#82a667', '#bfadd0', '#db322e'];
+        $scope.labels = ['Ieradās', 'Neieradās'];
+        $scope.deputyData = [];
+        $scope.colors = ['#82a667', '#db322e'];
 
-    $scope.reasonsToColor = [];
-    $scope.colorsForReasons = [];
+        var currentUrlSplitted = window.location.href.split("/");
 
-    $scope.deputyLabels = [];
-    $scope.deputyData = [];
-    $scope.deputyChartColors = [];
+        var currentMunicipality = currentUrlSplitted[currentUrlSplitted.length - 1];
+        var urlToCall = '/api/PasvaldibasApmeklejumiBasic/' + currentMunicipality;
 
-    function inArray(needle, haystack) {
-        var count = haystack.length;
-        for (var i = 0; i < count; i++) {
-            if (haystack[i] === needle) { return true; }
-        }
-        return false;
-    }
+        $http({
+            method: 'GET',
+            url: urlToCall
+        }).then(function (response) {
 
-    var currentUrlSplitted = window.location.href.split("/");
+            $scope.municipalityName = response.data.PasvaldibaName;
+            $scope.municipalityCode = response.data.PasvaldibaCode;
+            $scope.deputies = response.data.Deputies;
 
-    var currentMunicipality = currentUrlSplitted[currentUrlSplitted.length - 1];
-    var urlToCall = '/api/PasvaldibasApmeklejumi/' + currentMunicipality;
-    
-    $http({
-        method: 'GET',
-        url: urlToCall
-    }).then(function (response) {
+            // go through all deputies
+            $scope.deputies.forEach(function (deputy) {
 
-        $scope.municipalityName = response.data.PasvaldibaName;
-        $scope.municipalityCode = response.data.PasvaldibaCode;
-        $scope.deputies = response.data.Deputies;
-
-        // go through all deputies
-        $scope.deputies.forEach(function (deputy) {
-
-            // get all reasons
-            var reasons = Object.getOwnPropertyNames(deputy.NotAttendedCountReasons);
-
-            // if there are any reason
-            if (reasons.length > 0) {
-                // go through all reasons
-                reasons.forEach(function (reason) {
-                    // check if exists in already colored reasons
-                    var exists = inArray(reason, $scope.reasonsToColor);
-
-                    // if does not exist, add to colored reasons
-                    if (!exists) {
-                        var newColor = $scope.allColors.pop();
-                        $scope.reasonsToColor.push(reason);
-                        $scope.colorsForReasons.push(newColor);
-                    }
+                var data = [];
+                data.push(deputy.AttendedCount);
+                data.push(deputy.NotAttendedCount);
+                $scope.deputyData.push({
+                    data: data
                 });
+            });
+
+            $scope.loadingData = false;
+
+        }, function () {
+            $scope.isError = true;
+            $scope.loadingData = false;
+        });
+
+        $scope.options = {
+            legend: { display: false },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        
+                        var currentValue = data.datasets[0].data[tooltipItem.index];
+                        var label = data.labels[tooltipItem.index];
+                        var allSum = 0;
+                        data.datasets[0].data.forEach(function(value) {
+                            allSum += value;
+                        });
+                        return label + ": " + Math.round(currentValue / allSum * 100) + "% sēžu";
+
+                    }
+                }
+            }
+        };
+
+        $scope.openDeputy = function (dptyId) {
+
+            var data = {
+                deputyId: dptyId
             }
 
-            // get labels
-            $scope.deputyLabels.push({
-                labels: reasons.sort()
-            });
-
-            // get data
-            var data = [];
-            reasons.sort().forEach(function (val) {
-                data.push(deputy.NotAttendedCountReasons[val]);
-            });
-            $scope.deputyData.push({
-                data: data
-            });
-
-            // get chart colors
-            var colors = [];
-            reasons.sort().forEach(function (reason) {
-                var index = $scope.reasonsToColor.indexOf(reason);
-
-                colors.push($scope.colorsForReasons[index]);
-            });
-            $scope.deputyChartColors.push({
-                colors: colors
-            });
+            ngDialog.open({
+                template: '../Templates/deputyView.html',
+                controller: 'DeputyCtrl',
+                data: data,
+                width: 600
         });
-
-        $scope.loadingData = false;
-
-    }, function () {
-        $scope.isError = true;
-        $scope.loadingData = false;
-    });
-
-    $scope.options = {
-        legend: { display: false }
-    };
-
-    $scope.openDeputy = function (dptyId) {
-        
-        var data = {
-            deputyId: dptyId
         }
 
-        ngDialog.open({
-            template: '../Templates/deputyView.html',
-            controller: 'DeputyCtrl',
-            data: data
-        });
-    }
-
-    $scope.getLabels = function (deputy) {
-
-        return $scope.deputyLabels[deputy].labels;
-
-    }
-
-    $scope.getData = function (deputy) {
-
-        return $scope.deputyData[deputy].data;
-    }
-
-    $scope.getChartColors = function (deputy) {
-
-        return $scope.deputyChartColors[deputy].colors;
-    }
-
-    $scope.getColor = function (index) {
-        return {
-            "background-color": $scope.colorsForReasons[index]
-        }
-    }
-
-    // 80 - 100 - green
-    // 60 - 69 - orange
-    // 0 - 59 - red
-    $scope.getGoodness = function(deputy) {
-
-        var percentage = deputy.AttendedCount / (deputy.AttendedCount + deputy.NotAttendedCount);
-
-        var color = "";
-
-        if (percentage >= 0.8) {
-            color = "#82a667";
-        } else if (percentage >= 0.6 && percentage < 0.8) {
-            color = "#cb511b";
-        } else if (percentage < 0.6) {
-            color = "#db322e";
+        $scope.getData = function (deputy) {
+            return $scope.deputyData[deputy].data;
         }
 
-        return {
-            "color": color
+        $scope.getColor = function (index) {
+            return {
+                "background-color": $scope.colorsForReasons[index]
+            }
         }
-    }
 
-}]);
+        $scope.getGoodness = function (deputy) {
 
-myApp.controller('DeputyCtrl', ['$scope','$http', function ($scope, $http) {
+            var percentage = deputy.AttendedCount / (deputy.AttendedCount + deputy.NotAttendedCount);
+
+            var color = "";
+
+            if (percentage >= 0.8) {
+                color = "#009900";
+            } else if (percentage >= 0.4 && percentage < 0.8) {
+                color = "#ffcc00";
+            } else if (percentage < 0.4) {
+                color = "#ff0000";
+            }
+
+            return {
+                "color": color
+            }
+        }
+    }]);
+
+myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.deputyName = "";
     $scope.deputyMunicipality = "";
+
+    $scope.iemesluKrasas = {};
+    $scope.iemesluKrasas["Ieradās"] = "#82a667";
+    $scope.iemesluKrasas["Neieradās"] = "#db322e";
+    $scope.iemesluKrasas["Darbā"] = "#09f935";
+    $scope.iemesluKrasas["Slimība"] = "#cb511b";
+    $scope.iemesluKrasas["Atvaļinājums"] = "#dfd701";
+
+    $scope.allColors = ['#93d3d3', '#451722', '#564f3b', '#efd489', '#bfadd0', '#db322e'];
+
+    $scope.pieLabels = [];
+    $scope.pieColors = [];
+    $scope.pieData = [];
 
     $scope.data2013labels = [];
     $scope.data2014labels = [];
@@ -173,7 +137,11 @@ myApp.controller('DeputyCtrl', ['$scope','$http', function ($scope, $http) {
     $scope.data2015data = [];
     $scope.data2016data = [];
 
-    $scope.options = {
+    $scope.pieOptions = {
+        legend: { display: false }
+    };
+
+    $scope.options2013 = {
         scales: {
             yAxes: [{
                 display: false,
@@ -182,36 +150,178 @@ myApp.controller('DeputyCtrl', ['$scope','$http', function ($scope, $http) {
                     min: 0,
                     max: 1.2,
                     stepSize: 0.2
+                },
+                barThickness: 50,
+                gridLines: {
+                    display: false
+                }
+            }],
+            xAxes: [
+            {
+                stacked: true,
+                barPercentage: 1,
+                categoryPercentage: 1,
+                barThickness: 20,
+                gridLines: {
+                    display: false
                 }
             }]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index];
+                    var newValue = $scope.tooltipLabel2013[label];
+                    return newValue;
+                }
+            }
         }
-    }
+    };
+    $scope.options2014 = {
+        scales: {
+            yAxes: [{
+                display: false,
+                barPercentage: 1,
+                ticks: {
+                    min: 0,
+                    max: 1.2,
+                    stepSize: 0.2
+                },
+                barThickness: 50,
+                gridLines: {
+                    display: false
+                }
+            }],
+            xAxes: [
+            {
+                stacked: true,
+                barPercentage: 1,
+                barThickness: 20,
+                gridLines: {
+                    display: false
+                }
+            }]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index];
+                    var newValue = $scope.tooltipLabel2014[label];
+                    return newValue;
+                }
+            }
+        }
+    };
+    $scope.options2015 = {
+        scales: {
+            yAxes: [{
+                display: false,
+                barPercentage: 1,
+                ticks: {
+                    min: 0,
+                    max: 1.2,
+                    stepSize: 0.2
+                },
+                barThickness: 50,
+                gridLines: {
+                    display: false
+                }
+            }],
+            xAxes: [
+            {
+                stacked: true,
+                barPercentage: 1,
+                barThickness: 20,
+                gridLines: {
+                    display: false
+                }
+            }]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index];
+                    var newValue = $scope.tooltipLabel2015[label];
+                    return newValue;
+                }
+            }
+        }
+    };
+    $scope.options2016 = {
+        scales: {
+            yAxes: [{
+                display: false,
+                barPercentage: 1,
+                ticks: {
+                    min: 0,
+                    max: 1.2,
+                    stepSize: 0.2
+                },
+                barThickness: 50,
+                gridLines: {
+                    display: false
+                }
+            }],
+            xAxes: [
+            {
+                stacked: true,
+                barPercentage: 1,
+                barThickness: 20,
+                gridLines: {
+                    display: false
+                }
+            }]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.labels[tooltipItem.index];
+                    var newValue = $scope.tooltipLabel2016[label];
+                    return newValue;
+                }
+            }
+        }
+    };
 
     $scope.dataset2013Override = [{}];
-
     $scope.dataset2014Override = [{}];
-
     $scope.dataset2015Override = [{}];
-
     $scope.dataset2016Override = [{}];
+
+    $scope.tooltipLabel2013 = {}
+    $scope.tooltipLabel2014 = {}
+    $scope.tooltipLabel2015 = {}
+    $scope.tooltipLabel2016 = {}
 
     var urlToCall = '/api/Deputati/' + $scope.ngDialogData.deputyId;
 
-    function populate(apmeklejumi, labels, data, override) {
+    function populate(apmeklejumi, labels, data, override, newLabels) {
         var d = [];
         var c = [];
         apmeklejumi.forEach(function (val) {
             labels.push(val.Date);
 
             if (val.Attended === "1") {
-                c.push("#458B00");
+                c.push($scope.iemesluKrasas["Ieradās"]);
+                newLabels[val.Date] = "Ieradās";
             } else {
-                c.push("#FF0000");
+                c.push($scope.iemesluKrasas[val.Reason]);
+                newLabels[val.Date] = val.Reason;
             }
+
             d.push(1);
         });
         data.push(d);
         override[0].backgroundColor = c;
+        override[0].borderWidth = 0;
+    }
+
+    function inArray(needle, haystack) {
+        var count = haystack.length;
+        for (var i = 0; i < count; i++) {
+            if (haystack[i] === needle) { return true; }
+        }
+        return false;
     }
 
     $http({
@@ -222,25 +332,59 @@ myApp.controller('DeputyCtrl', ['$scope','$http', function ($scope, $http) {
             $scope.deputyName = response.data.Name;
             $scope.deputyMunicipality = response.data.Municipality;
 
-            populate(response.data.Apmeklejumi2013, $scope.data2013labels, $scope.data2013data, $scope.dataset2013Override);
-            populate(response.data.Apmeklejumi2014, $scope.data2014labels, $scope.data2014data, $scope.dataset2014Override);
-            populate(response.data.Apmeklejumi2015, $scope.data2015labels, $scope.data2015data, $scope.dataset2015Override);
-            populate(response.data.Apmeklejumi2016, $scope.data2016labels, $scope.data2016data, $scope.dataset2016Override);
+            // get all reasons
+            var reasons = Object.getOwnPropertyNames(response.data.NotAttendedCountReasons);
+
+            // if there are any reason
+            if (reasons.length > 0) {
+
+                // go through all reasons
+                reasons.sort().forEach(function (reason) {
+
+                    // check if exists in already colored reasons
+                    var exists = inArray(reason, $scope.pieLabels);
+
+                    // if does not exist, add to colored reasons
+                    if (!exists) {
+
+                        var newColor;
+                        if ($scope.iemesluKrasas[reason]) {
+                            newColor = $scope.iemesluKrasas[reason];
+                        } else {
+                            newColor = $scope.allColors.pop();
+                            $scope.iemesluKrasas[reason] = newColor;
+                        }
+
+                        $scope.pieLabels.push(reason);
+                        $scope.pieColors.push(newColor);
+                    }
+                });
+            }
+
+            // get data
+            reasons.sort().forEach(function (val) {
+                $scope.pieData.push(response.data.NotAttendedCountReasons[val]);
+            });
+
+            populate(response.data.Apmeklejumi2013, $scope.data2013labels, $scope.data2013data, $scope.dataset2013Override, $scope.tooltipLabel2013);
+            populate(response.data.Apmeklejumi2014, $scope.data2014labels, $scope.data2014data, $scope.dataset2014Override, $scope.tooltipLabel2014);
+            populate(response.data.Apmeklejumi2015, $scope.data2015labels, $scope.data2015data, $scope.dataset2015Override, $scope.tooltipLabel2015);
+            populate(response.data.Apmeklejumi2016, $scope.data2016labels, $scope.data2016data, $scope.dataset2016Override, $scope.tooltipLabel2016);
         });
 
 }]);
 
 myApp.controller('OverviewCtrl', ['$scope', '$http', function ($scope, $http) {
-    
+
     $scope.loadingData = true;
 
     $scope.municipalities = null;
 
     $http({
-            method: 'GET',
-            url: '/api/Pasvaldiba'
-        })
-        .then(function(response) {
+        method: 'GET',
+        url: '/api/Pasvaldiba'
+    })
+        .then(function (response) {
 
             $scope.municipalities = response.data;
 

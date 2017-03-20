@@ -22,6 +22,10 @@ namespace Pasvaldibas.Web.Models
 
         public string Status { get; set; }
 
+        public decimal Latitude { get; set; }
+
+        public decimal Longtitude { get; set; }
+
         public virtual List<Deputats> Deputati { get; set; }
     }
 }

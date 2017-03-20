@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Pasvaldibas.Web.Models;
@@ -11,7 +8,7 @@ namespace Pasvaldibas.Web.Controllers.api
 {
     public class DeputatiController : ApiController
     {
-        private ApplicationDbContext _db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         [HttpGet]
         [ResponseType(typeof(ApmeklejumsViewModel))]
@@ -31,15 +28,17 @@ namespace Pasvaldibas.Web.Controllers.api
                 Apmeklejumi2013 = new List<ApmeklejumsItem>(),
                 Apmeklejumi2014 = new List<ApmeklejumsItem>(),
                 Apmeklejumi2015 = new List<ApmeklejumsItem>(),
-                Apmeklejumi2016 = new List<ApmeklejumsItem>()
+                Apmeklejumi2016 = new List<ApmeklejumsItem>(),
+                NotAttendedCountReasons = new Dictionary<string, int>()
             };
 
             foreach (var apmeklejums in apmeklejumi)
             {
                 var item = new ApmeklejumsItem
                 {
-                    Date = $"{apmeklejums.Datums.Day}.{apmeklejums.Datums.Month}.{apmeklejums.Datums.Year}",
-                    Attended = apmeklejums.Apmekleja ? "1" : "0"
+                    Date = $"{apmeklejums.Datums.Day.ToString().PadLeft(2, '0')}.{apmeklejums.Datums.Month.ToString().PadLeft(2, '0')}",
+                    Attended = apmeklejums.Apmekleja ? "1" : "0",
+                    Reason = apmeklejums.Apmekleja ? "Ieradās" : !string.IsNullOrEmpty(apmeklejums.NeapmeklesanasIemesls) ? apmeklejums.NeapmeklesanasIemesls : "Nav zināms"
                 };
 
                 if (apmeklejums.Datums.Year == 2013)
@@ -62,6 +61,28 @@ namespace Pasvaldibas.Web.Controllers.api
                     result.Apmeklejumi2016.Add(item);
                 }
 
+                string iemesls;
+
+                if (apmeklejums.Apmekleja)
+                {
+                    iemesls = "Ieradās";
+                }
+                else
+                {
+                    iemesls = apmeklejums.NeapmeklesanasIemesls.Length > 3
+                    ? apmeklejums.NeapmeklesanasIemesls
+                    : "Nav zināms";
+                };
+
+                if (result.NotAttendedCountReasons.ContainsKey(iemesls))
+                {
+                    result.NotAttendedCountReasons[iemesls] =
+                        result.NotAttendedCountReasons[iemesls] + 1;
+                }
+                else
+                {
+                    result.NotAttendedCountReasons.Add(iemesls, 1);
+                }
             }
 
             return Ok(result);
