@@ -34,6 +34,33 @@
     padding-top: 20px;
 }
 
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    .item-container {
+        height: 172.8px;
+    }
+}
+
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+    .item-container {
+        height: 160px;
+    }
+}
+
+@media only screen and (min-width : 480px) and (max-width : 767px) {
+    .item-canvas {
+        width: 45%;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width : 479px) {
+    .item-canvas {
+        width: 75%;
+        margin: 0 auto;
+    }
+}
+
 .municipality-body {
     font-family: "Roboto",Arial,sans-serif;
 }
@@ -101,6 +128,31 @@
     color: #82a667;
 }
 
-.deputy-bar-2014 {
-    height: 250px;
+.deputy-pie {
+    width: 50%;
+    margin: 0 auto;
+}
+
+input[type="button"], input[type="button"]:focus, input[type="button"]:active,
+button, button:focus, button:active {
+    /* Remove all decorations to look like normal text */
+    background: none;
+    border: none;
+    display: inline;
+    font: inherit;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    outline-offset: 0;
+    cursor: pointer;
+}
+    /* Remove extra space inside buttons in Firefox */
+    input[type="button"]::-moz-focus-inner,
+    button::-moz-focus-inner {
+        border: none;
+        padding: 0;
+    }
+
+.deputy-link {
+    cursor: pointer;
 }

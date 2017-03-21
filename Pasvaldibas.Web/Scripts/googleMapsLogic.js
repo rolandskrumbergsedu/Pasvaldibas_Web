@@ -27,15 +27,22 @@
                     url: link
                 });
                 
-                var contentString = '<h3>' + value.Name + '</h3><br/><a href="' + link + '">Skatīt domes sēžu apmeklējumu</a>';
+                var contentString = '<h3>' + value.Name + '</h3><br/><p>Nospied uz marķiera, lai apskatītu pašvaldības sēžu apmeklējumu</p>';
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
-                
-                marker.addListener('click',
-                    function() {
-                        infowindow.open(map, this);
-                    });
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    window.location.href = this.url;
+                });
+
+                marker.addListener('mouseover', function () {
+                    infowindow.open(map, this);
+                });
+
+                marker.addListener('mouseout', function () {
+                    infowindow.close();
+                });
             }
         });
 

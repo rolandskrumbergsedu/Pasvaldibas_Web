@@ -75,7 +75,7 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
                 template: '../Templates/deputyView.html',
                 controller: 'DeputyCtrl',
                 data: data,
-                width: 600
+                width: 700
         });
         }
 
@@ -97,9 +97,9 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
 
             if (percentage >= 0.8) {
                 color = "#009900";
-            } else if (percentage >= 0.4 && percentage < 0.8) {
+            } else if (percentage >= 0.5 && percentage < 0.8) {
                 color = "#ffcc00";
-            } else if (percentage < 0.4) {
+            } else if (percentage < 0.5) {
                 color = "#ff0000";
             }
 
@@ -142,6 +142,7 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.options2013 = {
+        responsive: false,
         scales: {
             yAxes: [{
                 display: false,
@@ -178,6 +179,7 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
         }
     };
     $scope.options2014 = {
+        responsive: false,
         scales: {
             yAxes: [{
                 display: false,
@@ -213,6 +215,7 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
         }
     };
     $scope.options2015 = {
+        responsive: false,
         scales: {
             yAxes: [{
                 display: false,
@@ -248,6 +251,7 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
         }
     };
     $scope.options2016 = {
+        responsive: false,
         scales: {
             yAxes: [{
                 display: false,
@@ -370,6 +374,31 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             populate(response.data.Apmeklejumi2014, $scope.data2014labels, $scope.data2014data, $scope.dataset2014Override, $scope.tooltipLabel2014);
             populate(response.data.Apmeklejumi2015, $scope.data2015labels, $scope.data2015data, $scope.dataset2015Override, $scope.tooltipLabel2015);
             populate(response.data.Apmeklejumi2016, $scope.data2016labels, $scope.data2016data, $scope.dataset2016Override, $scope.tooltipLabel2016);
+
+            var width2013 = $scope.data2013labels.length * 20;
+            $scope.style2013 = {
+                height: '100px',
+                width: width2013 + 'px'
+            }
+
+            var width2014 = $scope.data2014labels.length * 20;
+            $scope.style2014 = {
+                height: '100px',
+                width: width2014 + 'px'
+            }
+
+            var width2015 = $scope.data2015labels.length * 20;
+            $scope.style2015 = {
+                height: '100px',
+                width: width2015 + 'px'
+            }
+
+            var width2016 = $scope.data2016labels.length * 20;
+            $scope.style2016 = {
+                height: '100px',
+                width: width2016 + 'px'
+            }
+
         });
 
 }]);

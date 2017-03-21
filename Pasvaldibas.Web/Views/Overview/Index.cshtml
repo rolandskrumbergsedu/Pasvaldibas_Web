@@ -26,11 +26,11 @@
                 <ul class="chart-legend">
                     <li>
                         <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#ff0000"></i>
-                        <span>Apmeklēti mazāk kā 40% sēžu</span>
+                        <span>Apmeklēti mazāk kā 50% sēžu</span>
                     </li>
                     <li>
                         <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#ffcc00"></i>
-                        <span>Apmeklēti vairāk kā 40% sēžu un mazāk kā 80% sēžu</span>
+                        <span>Apmeklēti vairāk kā 50% sēžu un mazāk kā 80% sēžu</span>
                     </li>
                     <li>
                         <i class="fa fa-user-circle-o fa-1 text-center" aria-hidden="true" style="color:#009900"></i>
@@ -40,11 +40,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="row">
-                    <div class="col-md-4 item-container" ng-repeat="deputy in deputies track by $index">
+                    <div class="col-xs-12 col-sm-6 col-md-4 item-container" ng-repeat="deputy in deputies track by $index">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-xs-12 col-sm-5">
                                 <a class="deputy-link" ng-click="openDeputy(deputy.Id)">
                                     <p class="text-center" ng-style="getGoodness(deputy)">
                                         <i class="fa fa-user-circle-o fa-4 text-center" aria-hidden="true"></i>
@@ -54,7 +54,7 @@
                                     <h6 class="text-center">{{deputy.AttendedCount}} no {{deputy.AllCount}}</h6>
                                 </a>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-xs-12 col-sm-6 item-canvas">
                                 <canvas class="chart chart-pie chart-xs" chart-data="getData($index)"
                                         chart-labels="labels"
                                         chart-options="options"
