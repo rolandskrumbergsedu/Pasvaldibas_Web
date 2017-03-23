@@ -28,7 +28,9 @@ namespace Pasvaldibas.Web.Controllers.api
                     Deputies = new List<DeputyViewModel>()
                 };
 
-                foreach (var deputats in municipality.Deputati)
+                var deputies = municipality.Deputati.OrderBy(x => x.Name);
+
+                foreach (var deputats in deputies)
                 {
                     var deputyModel = new DeputyViewModel
                     {

@@ -8,11 +8,11 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
         $scope.isError = false;
 
         $scope.reasonsToColor = ['Ieradās', 'Neieradās'];
-        $scope.colorsForReasons = ['#82a667', '#db322e'];
+        $scope.colorsForReasons = ['#47a447', '#ff0000'];
 
         $scope.labels = ['Ieradās', 'Neieradās'];
         $scope.deputyData = [];
-        $scope.colors = ['#82a667', '#db322e'];
+        $scope.colors = ['#47a447', '#ff0000'];
 
         var currentUrlSplitted = window.location.href.split("/");
 
@@ -49,6 +49,8 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
         $scope.options = {
             legend: { display: false },
             tooltips: {
+                bodyFontSize: 10,
+                titleFontSize: 10,
                 callbacks: {
                     label: function (tooltipItem, data) {
                         
@@ -75,7 +77,7 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
                 template: '../Templates/deputyView.html',
                 controller: 'DeputyCtrl',
                 data: data,
-                width: 700
+                width: 600
         });
         }
 
@@ -109,19 +111,23 @@ myApp.controller('PasvaldibaBasicCtrl', ['$scope', 'ngDialog', '$http',
         }
     }]);
 
+//https://github.com/chartjs/Chart.js/blob/master/samples/tooltips/custom-pie.html
 myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.deputyName = "";
     $scope.deputyMunicipality = "";
 
-    $scope.iemesluKrasas = {};
-    $scope.iemesluKrasas["Ieradās"] = "#82a667";
-    $scope.iemesluKrasas["Neieradās"] = "#db322e";
-    $scope.iemesluKrasas["Darbā"] = "#09f935";
-    $scope.iemesluKrasas["Slimība"] = "#cb511b";
-    $scope.iemesluKrasas["Atvaļinājums"] = "#dfd701";
+    $scope.show2013 = false;
+    $scope.show2014 = false;
+    $scope.show2015 = false;
+    $scope.show2016 = false;
 
-    $scope.allColors = ['#93d3d3', '#451722', '#564f3b', '#efd489', '#bfadd0', '#db322e'];
+    $scope.unattendedCount = 0;
+    $scope.allCount = 0;
+
+    $scope.iemesluKrasas = {};
+    $scope.iemesluKrasas["Ieradās"] = "#47a447";
+    $scope.iemesluKrasas["Neieradās"] = "#ff0000";
 
     $scope.pieLabels = [];
     $scope.pieColors = [];
@@ -138,9 +144,12 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.data2016data = [];
 
     $scope.pieOptions = {
-        legend: { display: false }
+        legend: { display: false },
+        tooltips: {
+            bodyFontSize: 11,
+            titleFontSize: 11
+        }
     };
-
     $scope.options2013 = {
         responsive: false,
         scales: {
@@ -169,6 +178,8 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             }]
         },
         tooltips: {
+            bodyFontSize: 11,
+            titleFontSize: 11,
             callbacks: {
                 label: function (tooltipItem, data) {
                     var label = data.labels[tooltipItem.index];
@@ -205,6 +216,8 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             }]
         },
         tooltips: {
+            bodyFontSize: 11,
+            titleFontSize: 11,
             callbacks: {
                 label: function (tooltipItem, data) {
                     var label = data.labels[tooltipItem.index];
@@ -241,6 +254,8 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             }]
         },
         tooltips: {
+            bodyFontSize: 11,
+            titleFontSize: 11,
             callbacks: {
                 label: function (tooltipItem, data) {
                     var label = data.labels[tooltipItem.index];
@@ -277,6 +292,8 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             }]
         },
         tooltips: {
+            bodyFontSize: 11,
+            titleFontSize: 11,
             callbacks: {
                 label: function (tooltipItem, data) {
                     var label = data.labels[tooltipItem.index];
@@ -302,6 +319,9 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
     function populate(apmeklejumi, labels, data, override, newLabels) {
         var d = [];
         var c = [];
+
+        $scope.allCount = $scope.allCount + apmeklejumi.length;
+
         apmeklejumi.forEach(function (val) {
             labels.push(val.Date);
 
@@ -309,7 +329,7 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
                 c.push($scope.iemesluKrasas["Ieradās"]);
                 newLabels[val.Date] = "Ieradās";
             } else {
-                c.push($scope.iemesluKrasas[val.Reason]);
+                c.push($scope.iemesluKrasas["Neieradās"]);
                 newLabels[val.Date] = val.Reason;
             }
 
@@ -351,16 +371,14 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
                     // if does not exist, add to colored reasons
                     if (!exists) {
 
-                        var newColor;
-                        if ($scope.iemesluKrasas[reason]) {
-                            newColor = $scope.iemesluKrasas[reason];
-                        } else {
-                            newColor = $scope.allColors.pop();
-                            $scope.iemesluKrasas[reason] = newColor;
-                        }
-
                         $scope.pieLabels.push(reason);
-                        $scope.pieColors.push(newColor);
+                        if (reason === "Ieradās") {
+                            $scope.pieColors.push($scope.iemesluKrasas["Ieradās"]);
+                        } else {
+                            $scope.pieColors.push($scope.iemesluKrasas["Neieradās"]);
+                            $scope.unattendedCount = $scope.unattendedCount + response.data.NotAttendedCountReasons[reason];
+                        }
+                        
                     }
                 });
             }
@@ -375,29 +393,71 @@ myApp.controller('DeputyCtrl', ['$scope', '$http', function ($scope, $http) {
             populate(response.data.Apmeklejumi2015, $scope.data2015labels, $scope.data2015data, $scope.dataset2015Override, $scope.tooltipLabel2015);
             populate(response.data.Apmeklejumi2016, $scope.data2016labels, $scope.data2016data, $scope.dataset2016Override, $scope.tooltipLabel2016);
 
-            var width2013 = $scope.data2013labels.length * 20;
-            $scope.style2013 = {
-                height: '100px',
-                width: width2013 + 'px'
+            var baseLength = 20;
+            if (response.data.Apmeklejumi2013.length > 25 || response.data.Apmeklejumi2014.length > 25 || response.data.Apmeklejumi2015.length > 25 || response.data.Apmeklejumi2016.length > 25) {
+                baseLength = 15;
             }
 
-            var width2014 = $scope.data2014labels.length * 20;
-            $scope.style2014 = {
-                height: '100px',
-                width: width2014 + 'px'
+            if (response.data.Apmeklejumi2013.length > 0) {
+                var width2013;
+                if ($scope.data2013labels.length < 5) {
+                    width2013 = $scope.data2013labels.length * 30;
+                } else {
+                    width2013 = $scope.data2013labels.length * baseLength;
+                }
+                
+                $scope.style2013 = {
+                    height: '110px',
+                    width: width2013 + 'px'
+                }
+                $scope.show2013 = true;
             }
 
-            var width2015 = $scope.data2015labels.length * 20;
-            $scope.style2015 = {
-                height: '100px',
-                width: width2015 + 'px'
+            if (response.data.Apmeklejumi2014.length > 0) {
+                var width2014;
+                if ($scope.data2014labels.length < 5) {
+                    width2014 = $scope.data2014labels.length * 30;
+                } else {
+                    width2014 = $scope.data2014labels.length * baseLength;
+                }
+
+                $scope.style2014 = {
+                    height: '100px',
+                    width: width2014 + 'px'
+                }
+                $scope.show2014 = true;
             }
 
-            var width2016 = $scope.data2016labels.length * 20;
-            $scope.style2016 = {
-                height: '100px',
-                width: width2016 + 'px'
+            if (response.data.Apmeklejumi2015.length > 0) {
+                var width2015;
+                if ($scope.data2015labels.length < 5) {
+                    width2015 = $scope.data2015labels.length * 30;
+                } else {
+                    width2015 = $scope.data2015labels.length * baseLength;
+                }
+
+                $scope.style2015 = {
+                    height: '100px',
+                    width: width2015 + 'px'
+                }
+                $scope.show2015 = true;
             }
+
+            if (response.data.Apmeklejumi2016.length > 0) {
+                var width2016;
+                if ($scope.data2016labels.length < 5) {
+                    width2016 = $scope.data2016labels.length * 30;
+                } else {
+                    width2016 = $scope.data2016labels.length * baseLength;
+                }
+
+                $scope.style2016 = {
+                    height: '100px',
+                    width: width2016 + 'px'
+                }
+                $scope.show2016 = true;
+            }
+
 
         });
 

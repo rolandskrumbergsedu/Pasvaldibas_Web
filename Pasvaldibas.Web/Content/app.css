@@ -11,23 +11,11 @@
 }
 
 .fa-4 {
-    font-size: 7em;
-}
-
-.fa-4 {
     font-size: 4em;
 }
 
-.good {
-    color: green;
-}
-
-.average {
-    color: orange;
-}
-
-.bad {
-    color: red;
+.fa-3 {
+    font-size: 2em;
 }
 
 .item-container {
@@ -37,13 +25,13 @@
 /* Medium Devices, Desktops */
 @media only screen and (min-width : 992px) {
     .item-container {
-        height: 172.8px;
+        height: 190px;
     }
 }
 
 @media only screen and (min-width : 768px) and (max-width : 991px) {
     .item-container {
-        height: 160px;
+        height: 175px;
     }
 }
 
@@ -128,9 +116,19 @@
     color: #82a667;
 }
 
-.deputy-pie {
+
+@media only screen and (min-width : 400px) {
+    .deputy-pie {
     width: 50%;
     margin: 0 auto;
+}
+}
+
+@media only screen and (max-width : 399px) {
+    .deputy-pie {
+    width: 80%;
+    margin: 0 auto;
+}
 }
 
 input[type="button"], input[type="button"]:focus, input[type="button"]:active,
@@ -155,4 +153,10 @@ button, button:focus, button:active {
 
 .deputy-link {
     cursor: pointer;
+}
+
+.timeline-container {
+    height: 120px;
+    width: 100%;
+    overflow-x: auto;
 }

@@ -2,50 +2,69 @@
 <h4 class="text-center" ng-cloak>{{deputyMunicipality}}</h4>
 
 <br />
-<h5 class="text-center">Neierašanās iemesli</h5>
+<h5 class="text-center">Neierašanās iemesli **</h5>
 <div class="deputy-pie">
     <canvas class="chart chart-pie chart-xs" chart-data="pieData"
             chart-labels="pieLabels"
             chart-options="pieOptions"
             chart-colors="pieColors"></canvas>
 </div>
+<h6 class="text-center">Apmeklētas {{allCount - unattendedCount}} no {{allCount}} sēdēm</h6>
+<br />
+
+<div ng-if="show2013">
+    <h5>Apmeklējums 2013. gadā *</h5>
+    <div class="timeline-container" ng-if="style2013">
+        <canvas class="chart-bar"
+                chart-data="data2013data"
+                chart-labels="data2013labels"
+                chart-dataset-override="dataset2013Override"
+                chart-options="options2013"
+                ng-style="style2013"></canvas>
+    </div>
+</div>
+
+<div ng-if="show2014">
+    <br />
+    <h5>Apmeklējums 2014. gadā *</h5>
+    <div class="timeline-container" ng-if="style2014">
+        <canvas class="chart-bar"
+                chart-data="data2014data"
+                chart-labels="data2014labels"
+                chart-dataset-override="dataset2014Override"
+                chart-options="options2014"
+                ng-style="style2014"></canvas>
+    </div>
+</div>
 
 <br />
-<h5>Apmeklējums 2013. gadā</h5>
-    <canvas class="chart-bar"
-            chart-data="data2013data"
-            chart-labels="data2013labels"
-            chart-dataset-override="dataset2013Override"
-            chart-options="options2013"
-            ng-style="style2013" ng-if="style2013"></canvas>
 
-
-<br />
-<h5>Apmeklējums 2014. gadā</h5>
-    <canvas class="chart-bar"
-            chart-data="data2014data"
-            chart-labels="data2014labels"
-            chart-dataset-override="dataset2014Override"
-            chart-options="options2014"
-            ng-style="style2014" ng-if="style2014"></canvas>
-
+<div ng-if="show2015">
+    <h5>Apmeklējums 2015. gadā *</h5>
+    <div class="timeline-container" ng-if="style2015">
+        <canvas class="chart-bar"
+                chart-data="data2015data"
+                chart-labels="data2015labels"
+                chart-dataset-override="dataset2015Override"
+                chart-options="options2015"
+                ng-style="style2015"></canvas>
+    </div>
+</div>
 
 <br />
-<h5>Apmeklējums 2015. gadā</h5>
-    <canvas class="chart-bar"
-            chart-data="data2015data"
-            chart-labels="data2015labels"
-            chart-dataset-override="dataset2015Override"
-            chart-options="options2015"
-            ng-style="style2015" ng-if="style2015"></canvas>
 
-
+<div ng-if="show2016">
+    <h5>Apmeklējums 2016. gadā *</h5>
+    <div class="timeline-container" ng-if="style2016">
+        <canvas class="chart-bar"
+                chart-data="data2016data"
+                chart-labels="data2016labels"
+                chart-dataset-override="dataset2016Override"
+                chart-options="options2016"
+                ng-style="style2016"></canvas>
+    </div>
+</div>
 <br />
-<h5>Apmeklējums 2016. gadā</h5>
-    <canvas class="chart-bar"
-            chart-data="data2016data"
-            chart-labels="data2016labels"
-            chart-dataset-override="dataset2016Override"
-            chart-options="options2016"
-            ng-style="style2016" ng-if="style2016"></canvas>
 
+<p><small><em>* Laika joslas garums ir atkarīgs no sēžu skaita</em></small></p>
+<p><small><em>** Kavējuma iemesli minēti, ja tie norādīti protokolā vai pašvaldības sniegtajā informācijā. Lielākoties, publicētas nedaudz pārfrāzētas versijas. Piemēram, iemesli "dēļ slimības", "saslimšanas dēļ", "darba nespēja" vai "gripa" pārdēvēti par "veselības stāvokļa dēļ".</em></small></p>

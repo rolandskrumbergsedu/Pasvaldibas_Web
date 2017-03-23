@@ -25,6 +25,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ApplicationInsightsResourceId>/subscriptions/17152ac4-39e9-4e69-87a7-36a4fcefc70f/resourcegroups/Default-Web-NorthEurope/providers/microsoft.insights/components/pasvaldibas</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/17152ac4-39e9-4e69-87a7-36a4fcefc70f/resourcegroups/Default-Web-NorthEurope/providers/microsoft.insights/components/pasvaldibas</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +46,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.2.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.2.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.2.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.2.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.2.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.TraceListener, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.TraceListener.2.2.0\lib\net45\Microsoft.ApplicationInsights.TraceListener.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -222,6 +256,7 @@
     <Compile Include="Controllers\PasvaldibaController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -267,8 +302,125 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\gerboni\ALSUNGA.jpg" />
-    <Content Include="Content\gerboni\DOBELE.jpg" />
+    <Content Include="Content\gerboni\ADAZI.png" />
+    <Content Include="Content\gerboni\AGLONAS_NOVADS.png" />
+    <Content Include="Content\gerboni\AIZKRAUKLES_NOVADS.png" />
+    <Content Include="Content\gerboni\AIZPUTE.png" />
+    <Content Include="Content\gerboni\AKNISTE.png" />
+    <Content Include="Content\gerboni\ALOJA.png" />
+    <Content Include="Content\gerboni\ALSUNGA.png" />
+    <Content Include="Content\gerboni\ALUKSNE.png" />
+    <Content Include="Content\gerboni\AMATA.png" />
+    <Content Include="Content\gerboni\APE.png" />
+    <Content Include="Content\gerboni\AUCE.png" />
+    <Content Include="Content\gerboni\BABITE.png" />
+    <Content Include="Content\gerboni\BALDONE.png" />
+    <Content Include="Content\gerboni\BALTINAVA.png" />
+    <Content Include="Content\gerboni\BALVI.png" />
+    <Content Include="Content\gerboni\BAUSKA.png" />
+    <Content Include="Content\gerboni\BEVERINA.png" />
+    <Content Include="Content\gerboni\BROCENI.png" />
+    <Content Include="Content\gerboni\BURTNIEKI.png" />
+    <Content Include="Content\gerboni\CARNIKAVA.png" />
+    <Content Include="Content\gerboni\CESIS.png" />
+    <Content Include="Content\gerboni\CESVAINE.png" />
+    <Content Include="Content\gerboni\CIBLA.png" />
+    <Content Include="Content\gerboni\DAGDA.png" />
+    <Content Include="Content\gerboni\DAUGAVPILS_NOVADS.png" />
+    <Content Include="Content\gerboni\DAUGAVPILS_PILSETA.png" />
+    <Content Include="Content\gerboni\DOBELE.png" />
+    <Content Include="Content\gerboni\DUNDAGA.png" />
+    <Content Include="Content\gerboni\DURBE.png" />
+    <Content Include="Content\gerboni\ENGURE.png" />
+    <Content Include="Content\gerboni\ERGLI.png" />
+    <Content Include="Content\gerboni\GARKALNE.png" />
+    <Content Include="Content\gerboni\GROBINAS_NOVADS.png" />
+    <Content Include="Content\gerboni\GULBENE.png" />
+    <Content Include="Content\gerboni\IECAVA.png" />
+    <Content Include="Content\gerboni\IKSKILE.png" />
+    <Content Include="Content\gerboni\ILUKSTE.png" />
+    <Content Include="Content\gerboni\INCUKALNS.png" />
+    <Content Include="Content\gerboni\JAUNJELGAVA.png" />
+    <Content Include="Content\gerboni\JAUNPIEBALGA.png" />
+    <Content Include="Content\gerboni\JAUNPILS.png" />
+    <Content Include="Content\gerboni\JEKABPILS_NOVADS.png" />
+    <Content Include="Content\gerboni\JEKABPILS_PILSETA.png" />
+    <Content Include="Content\gerboni\JELGAVAS_NOVADS.png" />
+    <Content Include="Content\gerboni\JELGAVAS_PILSETA.png" />
+    <Content Include="Content\gerboni\JURMALA.png" />
+    <Content Include="Content\gerboni\KANDAVA.png" />
+    <Content Include="Content\gerboni\KARSAVA.png" />
+    <Content Include="Content\gerboni\KEGUMS.png" />
+    <Content Include="Content\gerboni\KEKAVA.png" />
+    <Content Include="Content\gerboni\KOCENI.png" />
+    <Content Include="Content\gerboni\KOKNESE.png" />
+    <Content Include="Content\gerboni\KRASLAVA.png" />
+    <Content Include="Content\gerboni\KRIMULDA.png" />
+    <Content Include="Content\gerboni\KRUSTPILS.png" />
+    <Content Include="Content\gerboni\KULDIGA.png" />
+    <Content Include="Content\gerboni\LIELVARDE.png" />
+    <Content Include="Content\gerboni\LIEPAJAS_PILSETA.png" />
+    <Content Include="Content\gerboni\LIGATNE.png" />
+    <Content Include="Content\gerboni\LIMBAZI.png" />
+    <Content Include="Content\gerboni\LIVANI.png" />
+    <Content Include="Content\gerboni\LUBANA.png" />
+    <Content Include="Content\gerboni\LUDZA.png" />
+    <Content Include="Content\gerboni\MADONA.png" />
+    <Content Include="Content\gerboni\MALPILS.png" />
+    <Content Include="Content\gerboni\MARUPE.png" />
+    <Content Include="Content\gerboni\MAZSALACA.png" />
+    <Content Include="Content\gerboni\MERSRAGS.png" />
+    <Content Include="Content\gerboni\NAUKSENI.png" />
+    <Content Include="Content\gerboni\NERETA.png" />
+    <Content Include="Content\gerboni\NICA.png" />
+    <Content Include="Content\gerboni\OGRE.png" />
+    <Content Include="Content\gerboni\OLAINE.png" />
+    <Content Include="Content\gerboni\OZOLNIEKI.png" />
+    <Content Include="Content\gerboni\PARGAUJA.png" />
+    <Content Include="Content\gerboni\PAVILOSTA.png" />
+    <Content Include="Content\gerboni\PLAVINAS.png" />
+    <Content Include="Content\gerboni\PREILI.png" />
+    <Content Include="Content\gerboni\PRIEKULE.png" />
+    <Content Include="Content\gerboni\PRIEKULI.png" />
+    <Content Include="Content\gerboni\RAUNA.png" />
+    <Content Include="Content\gerboni\REZEKNES_NOVADS.png" />
+    <Content Include="Content\gerboni\REZEKNES_PILSETA.png" />
+    <Content Include="Content\gerboni\RIEBINI.png" />
+    <Content Include="Content\gerboni\RIGA.png" />
+    <Content Include="Content\gerboni\ROJA.png" />
+    <Content Include="Content\gerboni\ROPAZI.png" />
+    <Content Include="Content\gerboni\RUCAVA.png" />
+    <Content Include="Content\gerboni\RUGAJI.png" />
+    <Content Include="Content\gerboni\RUJIENA.png" />
+    <Content Include="Content\gerboni\RUNDALE.png" />
+    <Content Include="Content\gerboni\SALACGRIVA.png" />
+    <Content Include="Content\gerboni\SALASPILS.png" />
+    <Content Include="Content\gerboni\SALAS_NOVADS.png" />
+    <Content Include="Content\gerboni\SALDUS.png" />
+    <Content Include="Content\gerboni\SAULKRASTI.png" />
+    <Content Include="Content\gerboni\SEJA.png" />
+    <Content Include="Content\gerboni\SIGULDA.png" />
+    <Content Include="Content\gerboni\SKRIVERI.png" />
+    <Content Include="Content\gerboni\SKRUNDA.png" />
+    <Content Include="Content\gerboni\SMILTENE.png" />
+    <Content Include="Content\gerboni\STOPINI.png" />
+    <Content Include="Content\gerboni\STRENCI.png" />
+    <Content Include="Content\gerboni\TALSI.png" />
+    <Content Include="Content\gerboni\TERVETE.png" />
+    <Content Include="Content\gerboni\TUKUMS.png" />
+    <Content Include="Content\gerboni\VAINODE.png" />
+    <Content Include="Content\gerboni\VALKA.png" />
+    <Content Include="Content\gerboni\VALMIERAS_PILSETA.png" />
+    <Content Include="Content\gerboni\VARAKLANI.png" />
+    <Content Include="Content\gerboni\VARKAVA.png" />
+    <Content Include="Content\gerboni\VECPIEBALGA.png" />
+    <Content Include="Content\gerboni\VECUMNIEKI.png" />
+    <Content Include="Content\gerboni\VENTSPILS.png" />
+    <Content Include="Content\gerboni\VENTSPILS_NOVADS.png" />
+    <Content Include="Content\gerboni\VIESITE.png" />
+    <Content Include="Content\gerboni\VILAKA.png" />
+    <Content Include="Content\gerboni\VILANI.png" />
+    <Content Include="Content\gerboni\ZILUPE.png" />
     <Content Include="Content\images\dobele_gerb_1[1].jpg" />
     <Content Include="Content\ngDialog-theme-default.min.css" />
     <Content Include="Content\ngDialog.min.css" />
@@ -309,6 +461,9 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\pasvaldibas - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.min.js" />
@@ -352,6 +507,7 @@
     <Content Include="Views\Validation\GetAllDatesWhereDoubleDeputies.cshtml" />
     <Content Include="Views\Validation\GetAllDatesWhereNotCorrectOverallCount.cshtml" />
     <Content Include="Views\Validation\GetAll.cshtml" />
+    <Content Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -383,6 +539,9 @@
     <EmbeddedResource Include="Migrations\201703191731164_GPS.resx">
       <DependentUpon>201703191731164_GPS.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
